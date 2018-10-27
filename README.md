@@ -12,3 +12,4 @@ To start all of the cards are laid face down on a surface and two cards are flip
 - Use a CSS framework of your choice to arrange the cards on the web page
 - Load the images for the game through an API of your choice
 - Show a loading message while the images are being loaded through the API
+- Provide a "Reset" button which restarts the game and loads new images

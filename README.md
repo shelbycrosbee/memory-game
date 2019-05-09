@@ -12,6 +12,5 @@ Provide a "Reset" button which enables the player restart the game at any time.
 
 ### Bonus
 
-- Load the images for the game through an API of your choice
+- Load the images for the game through the [Marvel API](https://developer.marvel.com/)
 - Show a loading message while the images are being loaded through the API
-- Implement a CSS framework of your choice to arrange the cards within a grid and "prettify" the game

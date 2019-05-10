@@ -4,7 +4,7 @@ Develop the card game "Memory" with all knowledge you have gained in React, Java
 
 To start all of the cards are laid face down on a surface and two cards are flipped face up over each turn. The goal of the game is to find all pairs of matching cards.
 
-The images to use are provided in "/src/img" folder of the scaffolded Create-React-App.
+The images to use are provided in "/public/img" folder of the scaffolded Create-React-App.
 
 Provide a "Reset" button which enables the player restart the game at any time.
 

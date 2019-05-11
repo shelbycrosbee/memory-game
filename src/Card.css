@@ -1,0 +1,32 @@
+.card {
+  background: rgb(140, 209, 214);
+  border: 1px solid rgb(89, 89, 89);
+  /* float: left; */
+  font-size: 24px;
+  font-weight: bold;
+  line-height: 34px;
+  height: 100px;
+  margin: auto;
+  text-align: center;
+  width: 100px;
+
+}
+
+.gridContainer {
+  display: grid;
+  grid-row-gap: 50px;
+  grid-template-columns: auto auto auto auto auto;
+  max-width: 600px;
+  /* min-width: 500px; */
+  /* grid-template-rows: auto auto auto auto; */
+}
+
+
+.smallerImage {
+  height: 100%;
+  width: 100%;
+}
+
+.hidden {
+  visibility: hidden;
+}

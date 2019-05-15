@@ -1,7 +1,6 @@
 .card {
-  background: rgb(140, 209, 214);
+  background: rgb(155, 236, 241);
   border: 1px solid rgb(89, 89, 89);
-  /* float: left; */
   font-size: 24px;
   font-weight: bold;
   line-height: 34px;
@@ -17,8 +16,6 @@
   grid-row-gap: 50px;
   grid-template-columns: auto auto auto auto auto;
   max-width: 600px;
-  /* min-width: 500px; */
-  /* grid-template-rows: auto auto auto auto; */
 }
 
 
@@ -29,4 +26,13 @@
 
 .hidden {
   visibility: hidden;
+}
+
+.button {
+  border: 2px solid;
+  height: 50px;
+  width: 150px;
+  font-size: 20px;
+  margin-left: 50px;
+  background-color: rgb(131, 241, 127)
 }

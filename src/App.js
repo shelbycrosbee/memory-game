@@ -1,18 +1,11 @@
 import React from "react";
 import "./App.css";
 import Card from "./Card";
-import { Z_FILTERED } from "zlib";
-//create a reusable component that is a box
-//create a grid of images/objects add the box component to the 'card'
-//randomize the order of the boxes
-//be able to flip the boxes onClick
-//store the selected box in game
-//add another onClick 
-//store the second selection
-//compare onClick1 to onClick2 if equal setState of grid with those clicks image-up
-//if != reflip go back to previous state
-//continue until all pairs are found
-//create a reset button that returns all of the 'cards' to face down and randomized. 
+import axios from "axios";
+//more you can do with this:
+// add in dropdowns where the user could choose the character
+//display a loading message
+//let the player choose the number of tiles
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -20,6 +13,7 @@ class App extends React.Component {
       cardOneFlipped: "",
       clickCounter: 0,
       cardTwoFlipped: "",
+      upCardsCount: 0,
       cards: [
         {
           id: 0,
@@ -86,24 +80,54 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    let idCounter = 10
-    let repeatCardListArr = this.state.cards.map((card) => {
-      let newCard = {
-        ...card,
-        id: idCounter++
+    axios.get('https://gateway.marvel.com/v1/public/characters', {
+      params: {
+        apikey: "c56887ba881836aef8c0b1dfef37eecf",
+        orderBy: "-modified",
+        limit: 10,
+
       }
-      return newCard
     })
+      .then((response) => {
+        // handle success
+        console.log(response.data);
+        let characters = response.data.data.results.map((c, i) => {
+          return {
+            id: i,
+            name: c.name,
+            url: `${c.thumbnail.path}.${c.thumbnail.extension}`
+          }
+        })
+        let idCounter = 10
+        let repeatCardListArr = characters.map((card) => {
+          let newCard = {
+            ...card,
+            id: idCounter++
+          }
+          return newCard
+        })
+    
+        var fullCardList = characters.slice().concat(repeatCardListArr)
+    
+        let shuffledCards = this.shuffleArray(fullCardList);
+    
+        this.setState({
+          cards: shuffledCards,
+        })
+      })
 
-    var fullCardList = this.state.cards.slice().concat(repeatCardListArr)
-
-    this.setState({
-      cards: fullCardList,
-    })
+      .catch(function (error) {
+        // handle error
+        console.log(error);
+      })
+      .finally(function () {
+        // always executed
+      });
+   
   }
 
-
   handleClick = (e, cardId) => {
+
     if (this.state.clickCounter === 0) {
       let newCards = this.state.cards.map((card) => {
         if (card.id === cardId) {
@@ -152,6 +176,7 @@ class App extends React.Component {
           cardOneFlipped: "",
           cardTwoFlipped: "",
           clickCounter: 0,
+          upCardsCount: this.state.upCardsCount + 2,
         })
       } else {
         let newCards = this.state.cards.map((card) => {
@@ -161,7 +186,7 @@ class App extends React.Component {
               flip: false
             }
           }
-          else{
+          else {
             return {
               ...card,
             }
@@ -178,7 +203,52 @@ class App extends React.Component {
 
   }
 
+
+  componentDidUpdate() {
+    if (this.state.upCardsCount === this.state.cards.length) {
+      alert('You Won!');
+      this.setState({
+        upCardsCount: 0,
+      })
+    }
+  }
+
+  shuffleArray = (arr) => {
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      const temp = arr[i];
+      arr[i] = arr[j];
+      arr[j] = temp;
+    }
+    // console.log(arr)
+    return arr;
+
+  }
+
+  handleShuffle(e, cards) {
+    let shuffledCards = this.shuffleArray(cards);
+    console.log(shuffledCards)
+    return shuffledCards
+  }
+
+  handleRestart = (e) => {
+
+    let restartCards = this.state.cards.map((card) => {
+      return {
+        ...card,
+        flip: false,
+      }
+    })
+    let shuffleCards = this.handleShuffle(e, restartCards)
+    this.setState({
+      cards: shuffleCards,
+      upCardsCount: 0
+    })
+
+  }
+
   render() {
+
     let cardList = this.state.cards.map((card) => {
       return <li
         onClick={e => this.handleClick(e, card.id)}
@@ -189,7 +259,11 @@ class App extends React.Component {
     return (
       <div>
         <ul className="gridContainer">{cardList}</ul>
+        <button className="button" onClick={e => this.handleRestart(e)}
+        >Restart</button>
+        {/* <button className="button" onClick={this.handleShuffle.bind(this)}>Shuffle</button> */}
       </div>
+      //try to make restart and shuffle one button
     );
   }
 }
